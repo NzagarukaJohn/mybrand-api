@@ -1,9 +1,12 @@
+
 const express = require("express");
 const mongoose = require("mongoose");
 
-const queryRoutes = require("./routes/query");
+const queryRouter = require("./routes/query")
 const loginRouter = require("./routes/login")
+const signupRouter = require("./routes/sign-up")
 
+const port = 5000;
 const config = require("config")
 
 const app = express();
@@ -18,9 +21,14 @@ mongoose
 app.use(express.json())
 
 //middlewares for routes
-app.use("/queries",queryRoutes)
+app.use("/query",queryRouter)
 app.use("/login", loginRouter)
+app.use("/signup", signupRouter)
 
-app.listen(5000, () =>{
+
+app.set("port",port)
+app.listen(port, () =>{
         console.log("This server has  started")
 })
+
+module.exports = app;

@@ -1,6 +1,9 @@
 const express = require("express");
-const Query = require("../models/Query");
+const {Query, validateQuery} = require("../models/Query");
 const router = express.Router();
+
+const validateMiddleware = require("../middlewares/validateMiddleware")
+
 import { verifyToken } from "../controllers/verifyToken";
 
 
@@ -16,7 +19,7 @@ router.get("/", verifyToken ,async (req,res)=>{
 })
 
 
-router.post("/", async (req,res) =>{
+router.post("/", validateMiddleware(validateQuery) ,async (req,res) =>{
    try {
     const newQuery = new Query({
         name : req.body.username,
@@ -26,8 +29,9 @@ router.post("/", async (req,res) =>{
         })
 
     await newQuery.save();
-    res.status(200).send("New Query submitted successfully")     
+    res.status(201).send({"Message":"New Query submitted successfully"})     
    } catch (error){
+       console.log(req.body)
        res.status(400).send({error:"There was a problem submitting the query"})
    }
 })
