@@ -1,18 +1,21 @@
 const express = require("express");
-const Article = require("../models/Article");
+const {validateArticle,Article } = require("../models/Article");
 const router = express.Router();
+const validateMiddleWare = require('../middlewares/validateMiddleware')
 
-router.get("/", async(req,res)=>{
+import { verifyToken } from "../controllers/verifyToken";
+
+router.get("/", verifyToken,  async(req,res)=>{
     try {
         const queries = await Article.find();
         res.status(200).send(queries);
-    } catch {
+    } catch (error){
         res.status(500).send({error:"Problem with request"})
     }
 
 })
 
-router.get("/:id", async (req,res) =>{
+router.get("/:id", verifyToken, async (req,res) =>{
     try {
         const post = await Article.findOne({
             _id: req.params.id
@@ -26,25 +29,25 @@ router.get("/:id", async (req,res) =>{
 
 })
 
-router.post("/", async (req,res) =>{
+router.post("/",verifyToken,validateMiddleWare(validateArticle) , async (req,res) =>{
    try {
 
     const newArticle = new Article({
         heading : req.body.heading,
         content : req.body.content,
-
+        user_id : req.user["user"]["_id"]
         })
 
-    await newArticle.save();
+         await newArticle.save();
     res.status(200).send("New Article submitted successfully")     
    } catch (error){
        res.status(400).send({error:"There was a problem publishing the article"})
-       console.log(error)
+    //  console.log(error)
    }
 })
 
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken, async (req, res) => {
 	try {
 		await Article.deleteOne({ _id: req.params.id })
 		res.status(204).send()
