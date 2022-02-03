@@ -4,8 +4,8 @@
   "description": "A personal website with blog developed as part of Andela Technical Leadership Capstone project challenge",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "mocha --reporter progress buildScripts/testSetup.js \"tests/**/*.test.js\"",
+    "start": "babel-node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,26 @@
   },
   "homepage": "https://github.com/rukundo-kevin/My-Blog#readme",
   "dependencies": {
-    "dotenv": "^14.3.0",
+    "@hapi/joi": "^17.1.1",
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.28.1",
+    "config": "^3.3.7",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.1.7"
+    "mongoose": "^6.1.8",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/register": "^7.16.9",
+    "babel-loader": "^8.2.3",
+    "babel-polyfill": "^6.26.0",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "nodemon": "^2.0.15"
   }
 }
