@@ -4,7 +4,7 @@
   "description": "A personal website with blog developed as part of Andela Technical Leadership Capstone project challenge",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter progress buildScripts/testSetup.js \"tests/**/*.test.js\"",
+    "test": "mocha --reporter progress buildScripts/testSetup.js \"tests/**/*.test.js\"  --exit",
     "start": "babel-node index.js"
   },
   "repository": {
