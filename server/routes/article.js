@@ -1,14 +1,15 @@
 const express = require("express");
-const {validateArticle,Article } = require("../models/Article");
+const {validateArticle, Article } = require("../models/Article");
 const router = express.Router();
 const validateMiddleWare = require('../middlewares/validateMiddleware')
 
 import { verifyToken } from "../controllers/verifyToken";
+import validateMiddleware from "../middlewares/validateMiddleware";
 
 router.get("/", verifyToken,  async(req,res)=>{
     try {
-        const queries = await Article.find();
-        res.status(200).send(queries);
+        const articles = await Article.find({});
+        res.status(200).send(articles);
     } catch (error){
         res.status(500).send({error:"Problem with request"})
     }
@@ -17,11 +18,11 @@ router.get("/", verifyToken,  async(req,res)=>{
 
 router.get("/:id", verifyToken, async (req,res) =>{
     try {
-        const post = await Article.findOne({
+        const Article = await Article.findOne({
             _id: req.params.id
         })
     
-        res.send(post)   
+        res.send(Article)   
     } catch  {
         res.status(404)
         res.send({error: "Article doesn't exist !"})
@@ -29,20 +30,22 @@ router.get("/:id", verifyToken, async (req,res) =>{
 
 })
 
-router.post("/",verifyToken,validateMiddleWare(validateArticle) , async (req,res) =>{
+router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res) =>{
+   // console.log(req.body)
    try {
 
-    const newArticle = new Article({
+    const newArticle =await new Article({
         heading : req.body.heading,
         content : req.body.content,
-        user_id : req.user["user"]["_id"]
+        userId: req.user["id"],
+        image : req.body.image,
         })
+     await newArticle.save();
 
-         await newArticle.save();
-    res.status(200).send("New Article submitted successfully")     
+     res.status(201).send("New Article Created")     
    } catch (error){
        res.status(400).send({error:"There was a problem publishing the article"})
-    //  console.log(error)
+       console.log(error)
    }
 })
 
@@ -57,23 +60,25 @@ router.delete("/:id", verifyToken, async (req, res) => {
 	}
 })
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateMiddleWare(validateArticle) ,async (req, res) => {
 	try {
-		const post = await Article.findOne({ _id: req.params.id })
+		const Article = await Article.findOne({ _id: req.params.id })
 
 		if (req.body.heading) {
-			post.heading = req.body.heading
+			Article.heading = req.body.heading
 		}
 
 		if (req.body.content) {
-			post.content = req.body.content
+			Article.content = req.body.content
 		}
-
-		await post.save()
-		res.send(post)
+		if (req.body.image) {
+			Article.content = req.body.content
+		}
+		await Article.save()
+		res.send(Article)
 	} catch {
 		res.status(404)
-		res.send({ error: "Post doesn't exist!" })
+		res.send({ error: "Article doesn't exist!" })
 	}
 })
 
