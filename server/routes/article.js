@@ -42,10 +42,10 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
         })
      await newArticle.save();
 
-     res.status(201).send("New Article Created")     
+     res.status(201).send({Message:"New Article Created"})     
    } catch (error){
        res.status(400).send({error:"There was a problem publishing the article"})
-       console.log(error)
+    //    console.log(error)
    }
 })
 
@@ -55,8 +55,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
 		await Article.deleteOne({ _id: req.params.id })
 		res.status(204).send()
 	} catch {
-		res.status(404)
-		res.send({ error: "This article doesn't exist!" })
+		res.status(404).send({ error: "This article doesn't exist!" })
 	}
 })
 

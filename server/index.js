@@ -2,22 +2,29 @@
 
 const express = require("express");
 const mongoose = require("mongoose");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express")
 
 const articleRoutes = require("./routes/article")
-const queryRouter = require("./routes/comment")
+const queryRouter = require("./routes/query")
 const likeRouter = require("./routes/like")
 const commentRouter = require("./routes/comment")
 
 const loginRouter = require("./routes/login")
 const signupRouter = require("./routes/sign-up")
 
-const port = process.env.NODE_ENV || 5000;
+
+
+const port =  5000;
 const config = require("config")
+
+
+const app = express();
+
 
 const connectDB = async () => {
         await mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(()=>{
-            const app = express();
                 //middlewares
                 app.use(express.json())
 
@@ -34,16 +41,15 @@ const connectDB = async () => {
                 app.set("port",port)
 
                 app.listen(port, () =>{
-                        console.log("Server started")
+                       /// console.log("Server started")
                 })
 
         })
             .catch(function (error) {
                 console.log(`Unable to connect to the Mongo db  ${error} `);
             });
-            module.exports = app;
-
     };
     
     // use as a function        
     connectDB();
+    module.exports = app;

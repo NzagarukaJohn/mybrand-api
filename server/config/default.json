@@ -1,0 +1,4 @@
+{ 
+    "DBHost": "mongodb+srv://RukundoKevin:Camera1999@cluster0.kaxbg.mongodb.net/myblog?retryWrites=true&w=majority",
+    "secret":"myblog"
+}

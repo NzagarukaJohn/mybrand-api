@@ -8,14 +8,14 @@ import { verifyToken } from "../controllers/verifyToken";
 
 
 router.get("/", verifyToken ,async (req,res)=>{
-    const queries =await  Query.find();
+    const queries = await  Query.find();
     const user = req.user;
-     if(user["user"].type == "admin"){
-          res.send(queries);
-     }
-    else{
-        res.sendStatus(401);
-    }
+    //  if(user["user"].type == "user"){
+          res.status(200).send(queries);
+    //  }
+    // else{
+    //     res.sendStatus(401);
+    // }
 })
 
 
