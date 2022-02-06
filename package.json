@@ -4,10 +4,10 @@
   "description": "A personal website with blog developed as part of Andela Technical Leadership Capstone project challenge",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "npm run build",
     "test": "set NODE_ENV=test&& nyc mocha  buildScripts/testSetup.js \"tests/**/*.test.js\" --timeout 10000  --exit",
-    "start": "babel-node index.js",
-    "clean": "rm -rf build && mkdir build"
-
+    "start": "babel-node index.js"
+  
   },
   "repository": {
     "type": "git",
