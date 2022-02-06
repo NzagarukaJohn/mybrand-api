@@ -15,6 +15,7 @@ function verifyToken(req, res, next) {
     })
       next();
     } else {
+      console.log(bearerHeader)
       res.sendStatus(400);
     }
   

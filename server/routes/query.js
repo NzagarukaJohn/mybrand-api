@@ -6,6 +6,48 @@ const validateMiddleware = require("../middlewares/validateMiddleware")
 
 import { verifyToken } from "../controllers/verifyToken";
 
+/**
+ * @swagger
+ * security:
+ *   bearerAuth: []
+ * /query:
+ *   get:
+ *     summary: GET Queries
+ *     responses:
+ *       '400':
+ *         description: Bad Request 
+ *       '200':
+ *         description: A list of queries.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: The user's name.
+ *                     example: Gafuku Ramos
+ *                   email:
+ *                     type: string
+ *                     description: The user's email.
+ *                     example: gafuku@gmail.com
+ *                   subject:
+ *                     type: string
+ *                     description: the query subject.
+ *                     example: Just want to reach out
+ *                   message:
+ *                     type: string
+ *                     description: The user's message in the query.
+ *                     example: i want to link up and talk about gafuku family
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:           
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
 
 router.get("/", verifyToken ,async (req,res)=>{
     const queries = await  Query.find();

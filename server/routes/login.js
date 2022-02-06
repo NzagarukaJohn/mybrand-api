@@ -5,11 +5,46 @@ const {User,validateUser} = require("../models/User")
 const bcrypt = require("bcrypt")
 const config = require("config");
 
+
+
 router.get("/",async (req,res)=>{
     const users = await User.find()
 
     res.send(users)
 })
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login to get token
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                 password:
+ *                   type: string  
+ *     responses:
+ *       '400':
+ *         description: Bad Request 
+ *       '200':
+ *         description: A list of queries.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 Message:
+ *                   type: string
+ *                 
+ */
 
 router.post("/",async(req,res)=>{
     // await User.deleteMany({})

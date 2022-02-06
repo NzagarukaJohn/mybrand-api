@@ -7,6 +7,8 @@ const validateMiddleWare = require('../middlewares/validateMiddleware')
 
 import { verifyToken } from "../controllers/verifyToken";
 
+
+
 router.get("/",  async(req,res)=>{
     try {
         const likes = await Like.find({});

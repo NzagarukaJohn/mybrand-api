@@ -6,6 +6,8 @@ const validateMiddleWare = require('../middlewares/validateMiddleware')
 import { verifyToken } from "../controllers/verifyToken";
 import validateMiddleware from "../middlewares/validateMiddleware";
 
+
+
 router.get("/", verifyToken,  async(req,res)=>{
     try {
         const articles = await Article.find({});
@@ -40,6 +42,7 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
         userId: req.user["id"],
         image : req.body.image,
         })
+        console.log(req.user["id"])
      await newArticle.save();
 
      res.status(201).send({Message:"New Article Created"})     
