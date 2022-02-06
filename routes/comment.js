@@ -20,6 +20,7 @@ router.get("/",  async(req,res)=>{
 
 })
 
+
 router.get("/:id", async (req,res) =>{
     try {
         const comments = await Like.find({})

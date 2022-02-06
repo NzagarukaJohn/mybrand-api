@@ -42,7 +42,7 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
         userId: req.user["id"],
         image : req.body.image,
         })
-        console.log(req.user["id"])
+       // console.log(req.user["id"])
      await newArticle.save();
 
      res.status(201).send({Message:"New Article Created"})     

@@ -4,10 +4,9 @@
   "description": "A personal website with blog developed as part of Andela Technical Leadership Capstone project challenge",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "npm run build",
     "test": "set NODE_ENV=test&& nyc mocha  buildScripts/testSetup.js \"tests/**/*.test.js\" --timeout 10000  --exit",
-    "start": "babel-node index.js"
-  
+    "start": "babel-node index.js",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -17,6 +16,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rukundo-kevin/My-Blog/issues"
+  },
+  "engines": {
+    "node": "12.14.1"
   },
   "homepage": "https://github.com/rukundo-kevin/My-Blog#readme",
   "dependencies": {

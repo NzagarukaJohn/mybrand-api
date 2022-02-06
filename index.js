@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express")
 
+const api = require("./routes/api")
 const articleRoutes = require("./routes/article")
 const queryRouter = require("./routes/query")
 const likeRouter = require("./routes/like")
@@ -16,8 +17,7 @@ const loginRouter = require("./routes/login")
 const signupRouter = require("./routes/sign-up")
 
 
-
-const port =  5000;
+const PORT = process.env.PORT || 5000;
 const config = require("config")
 
 const swaggerDefinition = {
@@ -58,19 +58,13 @@ const app = express();
 const connectDB = async () => {
         await mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(()=>{
-                if(config.util.getEnv('NODE_ENV') != 'test'){
-                        console.log("server started")
-                }
-
-                router.get('/',(req,res)=>{
-                  res.send("Welcome to My Blog");
-                })
                 //middlewares
                 app.use(express.json())
                  
                 //middlewares for routes
                 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+                app.use("/",api)
                 app.use("/article",articleRoutes)
                 app.use("/query",queryRouter)
                 app.use("/like",likeRouter)
@@ -80,11 +74,13 @@ const connectDB = async () => {
                 app.use("/signup", signupRouter)
 
 
-                app.set("port",port)
+                app.set("port",PORT)
 
-                app.listen(port, () =>{
-                       /// console.log("Server started")
-                })
+                app.listen(PORT, () =>{
+                  if(config.util.getEnv('NODE_ENV') != 'test'){
+                    console.log("server started")
+                    } 
+                  })
 
         })
             .catch(function (error) {
