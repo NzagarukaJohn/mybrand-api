@@ -1,2 +1,4 @@
-server/node_modules
-node_mongo_tutorial
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
