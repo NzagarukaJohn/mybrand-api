@@ -1,7 +1,9 @@
 
 
 const express = require("express");
+const router = express.Router();
 const mongoose = require("mongoose");
+
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express")
 
@@ -59,9 +61,13 @@ const connectDB = async () => {
                 if(config.util.getEnv('NODE_ENV') != 'test'){
                         console.log("server started")
                 }
+
+                router.get('/',(req,res)=>{
+                  res.send("Welcome to My Blog");
+                })
                 //middlewares
                 app.use(express.json())
-
+                 
                 //middlewares for routes
                 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
