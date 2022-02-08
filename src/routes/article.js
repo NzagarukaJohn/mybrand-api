@@ -6,6 +6,40 @@ const validateMiddleWare = require('../middlewares/validateMiddleware')
 import { verifyToken } from "../controllers/verifyToken";
 import validateMiddleware from "../middlewares/validateMiddleware";
 
+//Get all Articles
+
+/**
+ * @openapi
+ * '/articles':
+ *  get:
+ *     tags:
+ *     - Articles
+ *     summary: Get all Articles
+ *     responses:
+ *       200:
+ *         description: Success
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                properties:
+ *                  id:
+ *                    type: string
+ *                  heading:
+ *                    type: string
+ *                  content:
+ *                     type: string
+ *                  image:
+ *                      type: string
+ *                  userId:
+ *                      type: string
+ *                  userId:
+ *                      type: date
+ *       400:
+ *         description: Bad request
+ */
 
 
 router.get("/", verifyToken,  async(req,res)=>{
