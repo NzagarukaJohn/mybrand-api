@@ -38,23 +38,24 @@ const swaggerDefinition = {
       },
       servers: [
         {
-          url: 'http://localhost:5000',
-          description: 'Development server',
+          url: 'https://rukundo-kevin-blog.herokuapp.com/'
         }]
         ,
+      schemes: [
+          "http",
+          "https"
+        ]
       };
       
       const options = {
         swaggerDefinition,
         // Paths to files containing OpenAPI definitions
-        apis: ['./routes/*.js'],
+        apis: ['src/routes/*.js'],
       };
       
       const swaggerSpec = swaggerJSDoc(options);
 
 const app = express();
-
-console.log(config.DBHost)
 
 const connectDB = async () => {
         await mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true })
