@@ -48,8 +48,7 @@ var swaggerDefinition = {
     url: 'https://www.rukundokevin.codes'
   },
   servers: [{
-    url: 'http://localhost:5000',
-    description: 'Development server'
+    url: 'https://rukundo-kevin-blog.herokuapp.com/'
   }]
 };
 var options = {
@@ -59,7 +58,6 @@ var options = {
 };
 var swaggerSpec = swaggerJSDoc(options);
 var app = express();
-console.log(config.DBHost);
 
 var connectDB = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
