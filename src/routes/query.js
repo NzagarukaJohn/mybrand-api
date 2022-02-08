@@ -41,12 +41,7 @@ import { verifyToken } from "../controllers/verifyToken";
  *                     type: string
  *                     description: The user's message in the query.
  *                     example: i want to link up and talk about gafuku family
- * components:
- *   securitySchemes:
- *     bearerAuth:           
- *       type: http
- *       scheme: bearer
- *       bearerFormat: JWT
+
  */
 
 router.get("/", verifyToken ,async (req,res)=>{

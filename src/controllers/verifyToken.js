@@ -1,23 +1,26 @@
+import { send } from "express/lib/response";
+
 const jwt = require("jsonwebtoken")
 const config = require("config");
 
 // Verify Token
 function verifyToken(req, res, next) {
+  try{
     const bearerHeader = req.headers['authorization'];
-    if(typeof bearerHeader !== 'undefined') {
-      const bearer = bearerHeader.split(' ');
-      const bearerToken = bearer[1];
-  // console.log(bearerToken)
+    const bearerToken = bearerHeader && bearerHeader.split(' ')[1];
+    if (bearerHeader == nul) return res.sendStatus(401);
+
+    // console.log(bearerToken)
     jwt.verify(bearerToken, config.secret, (err,user) =>{
       // console.log(err)
-        if (err) return res.sendStatus(401);
+        if (err) return res.sendStatus(403);
         req.user = user;
+        next();
     })
-      next();
-    } else {
-      console.log(bearerHeader)
-      res.sendStatus(401);
-    }
+  }
+  catch(err){
+    console.log(err)
+  }
   
   }
 export{ verifyToken }
