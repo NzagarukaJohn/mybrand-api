@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/buildScripts/testSetup.js"],"names":["require"],"mappings":";;AAAAA,OAAO,CAAC,iBAAD,CAAP;;AACAA,OAAO,CAAC,gBAAD,CAAP","sourcesContent":["require(\"@babel/register\")();\r\nrequire(\"babel-polyfill\");\r\n"],"file":"testSetup.js"}

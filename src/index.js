@@ -54,6 +54,7 @@ const swaggerDefinition = {
 
 const app = express();
 
+console.log(config.DBHost)
 
 const connectDB = async () => {
         await mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true })
