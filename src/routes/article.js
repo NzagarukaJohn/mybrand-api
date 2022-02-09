@@ -193,9 +193,10 @@ router.put("/:id", validateMiddleWare(validateArticle) ,async (req, res) => {
 		await Article.save()
 		res.send(Article)
 	} catch(err) {
-        console.log(err);
 		res.status(404);
 		res.send({ error: "We couldn't find that article " })
+        console.log(err);
+
 	}
 })
 
