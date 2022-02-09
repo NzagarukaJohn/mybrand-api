@@ -66,7 +66,6 @@ router.post("/",async(req,res)=>{
    } catch (err) {
        res.sendStatus(405);
    }
-  const accessTokenSecret = require("crypto").randomBytes(64).toString("hex");
 
 })
 

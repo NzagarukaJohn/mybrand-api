@@ -7,7 +7,36 @@ const validateMiddleWare = require('../middlewares/validateMiddleware')
 
 import { verifyToken } from "../controllers/verifyToken";
 
-
+/**
+ * @swagger
+ * security:
+ *   bearerAuth: []
+ * /like:
+ *   get:
+ *     summary: GET Likes
+ *     tags:
+ *       - Like
+ *     responses:
+ *       '400':
+ *         description: Bad Request 
+ *       '401':
+ *         description: Unauthorized
+ *       '200':
+ *         description: A list of likes on articles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     articleId: string
+ *                     description: The Id of the article with like.
+ *                   userId:
+ *                     type: string
+ *                     description: The Id of the user who gave the like
+ */
 
 router.get("/",  async(req,res)=>{
     try {
@@ -21,6 +50,8 @@ router.get("/",  async(req,res)=>{
 
 })
 
+
+
 router.get("/:id", async (req,res) =>{
     try {
         const likes = await Like.find({articleId:req.params.id})
@@ -32,6 +63,38 @@ router.get("/:id", async (req,res) =>{
     }
 
 })
+
+/** 
+* @swagger
+* /like:
+*   post:
+*     summary: Add New Like
+*     tags:
+*       - Like
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 articleId:
+*                   type: string
+*                   description: The id of the article to like
+*                  
+*     responses:
+*       '400':
+*         description: Bad Request 
+*       '201':
+*         description: Like added.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 Message:
+*                   type: string
+*/
 
 router.post("/",verifyToken,validateMiddleWare(validateLike) , async (req,res) =>{
    try {
