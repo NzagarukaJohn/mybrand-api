@@ -195,7 +195,7 @@ router.put("/:id", validateMiddleWare(validateArticle) ,async (req, res) => {
 	} catch(err) {
         console.log(err);
 		res.status(404);
-		res.send({ error: "Article doesn't " })
+		res.send({ error: "We couldn't find that article " })
 	}
 })
 
