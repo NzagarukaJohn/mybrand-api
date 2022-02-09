@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/rukundo-kevin/My-Blog/badge.svg?branch=main)](https://coveralls.io/github/rukundo-kevin/My-Blog?branch=main)
+![nycrc config on GitHub](https://img.shields.io/nycrc/rukundo-kevin/My-Blog?config=.nycrc)
 
 # MY BRAND(Personal Website + Blog)
    This is the website developed as part of Andela Capstone Project Challenge
