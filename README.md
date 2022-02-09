@@ -1,4 +1,5 @@
-https://img.shields.io/nycrc/rukundo-kevin/My-Blog?config=.nycrc
+![nycrc config on GitHub](https://img.shields.io/nycrc/rukundo-kevin/My-Blog?config=.nycrc)
+
 # MY BRAND(Personal Website + Blog)
    This is the website developed as part of Andela Capstone Project Challenge
  ## Checkout the live website 👇 ⬇️
