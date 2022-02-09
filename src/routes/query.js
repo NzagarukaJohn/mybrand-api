@@ -8,11 +8,11 @@ import { verifyToken } from "../controllers/verifyToken";
 
 /**
  * @swagger
- * security:
- *   bearerAuth: []
  * /query:
  *   get:
  *     summary: GET Queries
+ *     tags:
+ *       - Query
  *     responses:
  *       '400':
  *         description: Bad Request 
@@ -23,25 +23,39 @@ import { verifyToken } from "../controllers/verifyToken";
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   name:
- *                     type: string
- *                     description: The user's name.
- *                     example: Gafuku Ramos
- *                   email:
- *                     type: string
- *                     description: The user's email.
- *                     example: gafuku@gmail.com
- *                   subject:
- *                     type: string
- *                     description: the query subject.
- *                     example: Just want to reach out
- *                   message:
- *                     type: string
- *                     description: The user's message in the query.
- *                     example: i want to link up and talk about gafuku family
-
+ *                 $ref: '#/components/schemas/Query' 
+ * tags:
+ *   - name: Auth
+ *     description: Routes to access the authentication
+ *   - name: Article
+ *     description: Access to Articles
+ *   - name: Like
+ *     description: Access to Likes
+ *   - name: Query
+ *     description: Access to Queries
+ *   - name: Comment
+ *     description: Access to Comments
+ * components:
+ *   schemas:
+ *     Query:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The user's name.
+ *           example: Gafuku Ramos
+ *         mail:
+ *           type: string
+ *           description: The user's email.
+ *           example: gafuku@gmail.com
+ *         subject:
+ *           type: string
+ *           description: the query subject.
+ *           example: Just want to reach out
+ *         message:
+ *           type: string
+ *           description: The user's message in the query.
+ *           example: i want to link up and talk about gafuku family
  */
 
 router.get("/", verifyToken ,async (req,res)=>{
@@ -55,6 +69,32 @@ router.get("/", verifyToken ,async (req,res)=>{
     // }
 })
 
+/** 
+* @swagger
+* /query:
+*   post:
+*     summary: Add New Query
+*     tags:
+*       - Query
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*             schema:
+*               $ref: '#/components/schemas/Query' 
+*     responses:
+*       '400':
+*         description: Bad Request 
+*       '201':
+*         description: Query added.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 Message:
+*                   type: string
+*/
 
 router.post("/", validateMiddleware(validateQuery) ,async (req,res) =>{
    try {

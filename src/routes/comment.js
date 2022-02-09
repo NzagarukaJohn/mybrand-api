@@ -7,7 +7,39 @@ const validateMiddleWare = require('../middlewares/validateMiddleware')
 
 import { verifyToken } from "../controllers/verifyToken";
 
-
+/**
+ * @swagger
+ * security:
+ *   bearerAuth: []
+ * /comment:
+ *   get:
+ *     summary: GET Comments
+ *     tags:
+ *       - Comment
+ *     responses:
+ *       '400':
+ *         description: Bad Request 
+ *       '401':
+ *         description: Unauthorized
+ *       '200':
+ *         description: A list of comments on articles.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     articleId: string
+ *                     description: The Id of the article with comment.
+ *                   userId:
+ *                     type: string
+ *                     description: The Id of the user who commented
+ *                   comment:
+ *                     type: string
+ *                     description: comment contents
+ */
 
 router.get("/",  async(req,res)=>{
     try {
@@ -32,6 +64,46 @@ router.get("/:id", async (req,res) =>{
     }
 
 })
+
+/** 
+* @swagger
+* /comment:
+*   post:
+*     summary: Add New Comment
+*     tags:
+*       - Comment
+*     requestBody:
+*       required: true
+*       content:
+*         application/json:
+*             schema:
+*               $ref: '#/components/schemas/Comment' 
+*     responses:
+*       '400':
+*         description: Bad Request 
+*       '201':
+*         description: Comment added.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 Message:
+*                   type: string
+* components:
+*   schemas:
+*     Comment:
+*       type: object
+*       properties:
+*         articleId:
+*           type: string
+*           description: Article Id to add the comment to
+*           example: 9ad6beae833c2ea873
+*         comment:
+*           type: string
+*           description: comment.
+*           example: This swagger docs is great
+*/
 
 router.post("/",verifyToken,validateMiddleWare(validateComment) , async (req,res) =>{
    try {
