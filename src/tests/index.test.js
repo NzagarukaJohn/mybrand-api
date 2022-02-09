@@ -101,6 +101,7 @@ describe('API', () => {
               chai.request(server)
                   .post('/article')
                   .send(query)
+                  .set('Authorization', 'JWT ' + token) //token is actual token data
                   .end((err, res) => {
                         res.should.have.status(201);
                         res.body.should.be.a('object');
@@ -116,8 +117,8 @@ describe('API', () => {
         it(' should get queries ', (done) => {
 
             chai.request(server)
-                .get('/queries')
-                .set('Authorization', 'JWT ' + token) //token is actual token data
+                .get('/query')
+                .set('Authorization', 'JWT ' + token) 
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.body.should.be.a('array');
@@ -130,7 +131,7 @@ describe('API', () => {
         })
     })
 
-    describe("/POST queries",() =>{
+    describe("/POST query",() =>{
         it(' should POST a query ', (done) => {
             let query ={
                 "username": "Cook Indomie",
@@ -141,8 +142,9 @@ describe('API', () => {
             }
     
           chai.request(server)
-              .post('/queries')
+              .post('/query')
               .send(query)
+              .set('Authorization', 'JWT ' + token) //token is actual token data
               .end((err, res) => {
                     res.should.have.status(201);
                     res.body.should.be.a('object');

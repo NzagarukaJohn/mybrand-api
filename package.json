@@ -8,7 +8,8 @@
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "start": "babel-node src/index.js",
-    "test": "set NODE_ENV=test&& nyc mocha  src/buildScripts/testSetup.js \"src/tests/**/*.test.js\" --timeout 10000  --exit"
+    "test": "mocha  src/buildScripts/testSetup.js \"src/tests/**/*.test.js\" --timeout 10000  --exit",
+    "coverage": "set NODE_ENV=test&& nyc --check-coverage --lines=60 npm run test"
   },
   "repository": {
     "type": "git",

@@ -10,7 +10,6 @@ function verifyToken(req, res, next) {
     const bearerToken = bearerHeader && bearerHeader.split(' ')[1];
     if (bearerHeader == null) return res.sendStatus(401);
 
-  console.log(bearerToken)
     jwt.verify(bearerToken, config.secret, (err,user) =>{
       // console.log(err)
         if (err) return res.sendStatus(403);

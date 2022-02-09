@@ -34,8 +34,6 @@ import validateMiddleware from "../middlewares/validateMiddleware";
  *                  image:
  *                      type: string
  *                  userId:
- *                      type: string
- *                  userId:
  *                      type: date
  *       400:
  *         description: Bad request
