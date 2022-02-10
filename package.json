@@ -9,7 +9,7 @@
     "build": "npm run clean && npm run build-babel",
     "start": "babel-node src/index.js",
     "test": "mocha  src/buildScripts/testSetup.js \"src/tests/**/*.test.js\" --timeout 10000  --exit",
-    "coverage": "set NODE_ENV=test&& nyc --check-coverage --lines=60 npm run test"
+    "coverage": "set NODE_ENV=test&& nyc --check-coverage --reporter=lcov --lines=60 npm run test"
   },
   "repository": {
     "type": "git",

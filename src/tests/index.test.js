@@ -5,7 +5,7 @@ const config = require("config")
 let should = chai.should();
 
 //to be used to test private routes
-let token;
+let token,articleId;
 
 const mongoose = require("mongoose");
 
@@ -71,6 +71,37 @@ describe('API', () => {
                         })
                 })
         })
+
+        it('should not accept short password', function(done) {
+            chai.request(server)
+                // register request
+                .post('/signup')
+                // send user registration details
+                .send({
+                        'username': 'Ronaldo Chris',
+                        'password': 'tet',
+                    }
+                ) 
+                .end((err, res) => { // when we get a resonse from the endpoint
+                    res.should.have.status(400);
+                    done()
+                })
+        })
+
+        it("Should not allow invalid credentials",function (done) {
+            chai.request(server)
+            .post('/login')
+            // send user login details
+            .send({
+                'username': 'Ronalsdfdo Chris',
+                'password': 'sdfjlsdf'
+            })
+            .end((err, res) => {
+                 res.should.have.status(400);
+                 res.body.should.have.property('Message');
+                done();
+            })
+        })
    })
 
    describe("Article",()=>{
@@ -82,9 +113,21 @@ describe('API', () => {
                     .get('/article')
                     .set('Authorization', 'JWT ' + token) //token is actual token data
                     .end(function(err, res) {
+                        articleId = res.body[0]["_id"];
                         res.should.have.status(200);
                         res.body.should.be.a('array');
-                        res.body.length.should.be.eql(0);
+                        res.body[0].should.have.property('_id');
+                        res.body.length.should.not.be.eql(0);
+                        done();
+                    });
+            })
+
+            it(' should get a particular article article', (done) => {
+                chai.request(server)
+                    .get('/article/' + articleId)
+                    .set('Authorization', 'JWT ' + token) //token is actual token data
+                    .end(function(err, res) {
+                        res.should.have.status(200);
                         done();
                     });
             })
@@ -138,7 +181,6 @@ describe('API', () => {
                 "email": "cook@gmail.com",
                 "subject":"This is a subject",
                 "message":"This is a message from a good friend of yours"
-                
             }
     
           chai.request(server)
@@ -154,7 +196,9 @@ describe('API', () => {
         });
      })
    })
+
    describe("Likes",()=>{
+       let likeId;
         describe('/GET Like', () => {
             it(' should GET all the likes', (done) => {
             chai.request(server)
@@ -162,14 +206,47 @@ describe('API', () => {
                 .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('array');
-                        res.body.length.should.be.eql(0);
+                        res.body.length.should.not.be.eql(0);
+                        likeId = res.body[0]["_id"];
                     done();
                 });
             });
         });
   
+        describe("/POST like",() =>{
+            it(' should POST a like ', (done) => {
+                let like ={
+                    "articleId": articleId
+                }
+        
+              chai.request(server)
+                  .post('/like')
+                  .send(like)
+                  .set('Authorization', 'JWT ' + token) //token is actual token data
+                  .end((err, res) => {
+                        res.should.have.status(201);
+                    done();
+                  });
+            });
+         })
+
+         describe('/GET like/:id', () => {
+
+            it(' should GET a particular like', (done) => {
+              chai.request(server)
+                  .get('/like/' + likeId)
+                  .set('Authorization', 'JWT ' + token) //token is actual token data
+                  .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('object');
+                    done();
+                  });
+            });
+        });
+
   })
   describe("Comment",()=>{
+let commentId;
   describe('/GET comment', () => {
       it(' should GET all the comments', (done) => {
         chai.request(server)
@@ -177,19 +254,48 @@ describe('API', () => {
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('array');
-                  res.body.length.should.be.eql(0);
+                  res.body.length.should.not.be.eql(0);
+                  commentId = res.body[0]["_id"];
               done();
             });
       });
   });
 
+
+  describe("/POST comment",() =>{
+    it(' should POST a comment ', (done) => {
+        let comment ={
+            "articleId": articleId,
+            "comment" : "This is a test added during testing"
+        }
+
+      chai.request(server)
+          .post('/comment')
+          .send(comment)
+          .set('Authorization', 'JWT ' + token) //token is actual token data
+          .end((err, res) => {
+                res.should.have.status(201);
+            done();
+          });
+    });
+ })
+
+ describe('/GET comment/:id', () => {
+
+    it(' should GET a particular comment', (done) => {
+      chai.request(server)
+          .get('/comment/' + commentId)
+          .set('Authorization', 'JWT ' + token) //token is actual token data
+          .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+            done();
+          });
+    });
+});
+
+
   })
-
-
-
-//Test the /POST route
- 
-
 
 });
 

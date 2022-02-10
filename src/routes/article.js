@@ -56,19 +56,19 @@ router.get("/",  async(req,res)=>{
 
 })
 
+
 router.get("/:id", async (req,res) =>{
     try {
-        const Article = await Article.findOne({
-            _id: req.params.id
-        })
-    
-        res.send(Article)   
-    } catch  {
+        const article = await Article.findOne({ _id: req.params.id})
+        res.send(article)   
+    } catch (err) {
         res.status(404)
         res.send({error: "Article doesn't exist !"})
+        console.log(err)
     }
 
 })
+
 
 /** 
 * @swagger
@@ -145,7 +145,7 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
 router.delete("/:id", verifyToken, async (req, res) => {
 	try {
 		await Article.deleteOne({ _id: req.params.id })
-		res.status(204).send()
+		res.status(204).send();
 	} catch {
 		res.status(404).send({ error: "This article doesn't exist!" })
 	}
@@ -178,25 +178,24 @@ router.delete("/:id", verifyToken, async (req, res) => {
 
 router.put("/:id", validateMiddleWare(validateArticle) ,async (req, res) => {
 	try {
-		const Article = await Article.findOne({ _id: req.params.id })
+		const article = await Article.findOne({ _id: req.params.id })
 
 		if (req.body.heading) {
-			Article.heading = req.body.heading
+			article.heading = req.body.heading
 		}
 
 		if (req.body.content) {
-			Article.content = req.body.content
+			article.content = req.body.content
 		}
 		if (req.body.image) {
-			Article.content = req.body.content
+			article.content = req.body.content
 		}
-		await Article.save()
-		res.send(Article)
+		await article.save()
+		res.send(article)
 	} catch(err) {
 		res.status(404);
 		res.send({ error: "We couldn't find that article " })
-        console.log(err);
-
+        //console.log(err);
 	}
 })
 

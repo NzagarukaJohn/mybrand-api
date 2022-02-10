@@ -1,6 +1,6 @@
 const express = require("express");
 const {validateComment,Comment } = require("../models/Comment");
-const {Article } = require("../models/Like");
+const {Article } = require("../models/Article");
 
 const router = express.Router();
 const validateMiddleWare = require('../middlewares/validateMiddleware')
@@ -55,7 +55,7 @@ router.get("/",  async(req,res)=>{
 
 router.get("/:id", async (req,res) =>{
     try {
-        const comments = await Like.find({})
+        const comments = await Comment.find({})
     
         res.send({comments: comments.length})   
     } catch(error)  {
@@ -127,10 +127,10 @@ router.post("/",verifyToken,validateMiddleWare(validateComment) , async (req,res
 
 router.delete("/:id", verifyToken,validateMiddleWare(validateComment), async (req, res) => {
 	try {
-		await Like.deleteOne({ articleId: req.params.id , userId:req.user["user"]["_id"]})
+		await Comment.deleteOne({ articleId: req.params.id , userId:req.user["user"]["_id"]})
 		res.sendStatus(204);
 	} catch {
-		res.status(404)
+		res.status(404);
 		res.send({ error: "Problem disliking" })
 	}
 })

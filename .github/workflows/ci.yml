@@ -1,18 +1,21 @@
+name: git-build
+
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-name: ci
+  [push]
+
 jobs:
-  ...
-  coverage:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 13
-      - run: npm install
-      - run: npm test
-      - run: npm run coverage
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.18.3'
+    - run: npm ci
+    - run: npm run test-coverage
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
