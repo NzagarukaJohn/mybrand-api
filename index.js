@@ -11,7 +11,6 @@ dotenv.config()
 const app = express();
 
 mongoose
-//.connect("mongodb+srv://john:nzagaruka@cluster0.eiezz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",{ useNewUrlParser: true })
   .connect(process.env.MONGO_URL, { useNewUrlParser: true }) 
   .then(() => { 
     app.use(express.json());
