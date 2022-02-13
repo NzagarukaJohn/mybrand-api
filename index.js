@@ -19,7 +19,7 @@ mongoose
     app.use("/querry", query);
     app.use("/login", login);
 
-    app.listen(3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
       console.log("Server has started!");
     });
   
