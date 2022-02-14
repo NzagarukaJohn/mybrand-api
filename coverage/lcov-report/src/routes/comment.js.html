@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.72% </span>
+                <span class="strong">76.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/33</span>
+                <span class='fraction'>23/30</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.23% </span>
+                <span class="strong">73.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/26</span>
+                <span class='fraction'>17/23</span>
             </div>
         
             
@@ -197,10 +197,7 @@
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
 <a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L135'></a><a href='#L135'>135</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -306,22 +303,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">15x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -332,7 +327,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -383,10 +377,10 @@ import { verifyToken } from "../controllers/verifyToken";
 router.get("/",  <span class="branch-2 cbranch-no" title="branch not covered" >async(req,res)=&gt;{</span>
     try {
         const comments = await Comment.find({});
-        res.send(comments);
+        res.status(200).send(comments);
     } catch (error){
         // console.log(error)
-<span class="cstat-no" title="statement not covered" >        res.</span>sendStatus(500);
+<span class="cstat-no" title="statement not covered" >        res.</span>status(500).send({Message: "Problem getting comments"});
     }
 &nbsp;
 })
@@ -399,9 +393,8 @@ router.get("/:id", <span class="branch-2 cbranch-no" title="branch not covered" 
         res.send({comments: comments.length})   
     } catch(error)  {
 <span class="cstat-no" title="statement not covered" >        console.</span>error(error);
-<span class="cstat-no" title="statement not covered" >        res.</span>sendStatus(404);
+<span class="cstat-no" title="statement not covered" >        res.</span>sendStatus(404).send("Comment not found");
     }
-&nbsp;
 })
 &nbsp;
 /** 
@@ -444,7 +437,7 @@ router.get("/:id", <span class="branch-2 cbranch-no" title="branch not covered" 
 *           example: This swagger docs is great
 */
 &nbsp;
-router.post("/",verifyToken,validateMiddleWare(validateComment) , <span class="branch-3 cbranch-no" title="branch not covered" >async (r</span>eq,res) =&gt;{
+router.post("/",verifyToken,validateMiddleWare(validateComment) , <span class="branch-2 cbranch-no" title="branch not covered" >async (req,res) =&gt;{</span>
    try {
 &nbsp;
     const newComment = new Comment({
@@ -454,11 +447,10 @@ router.post("/",verifyToken,validateMiddleWare(validateComment) , <span class="b
         })
 &nbsp;
         await newComment.save();
-    res.sendStatus(201).send("")     
+    res.status(201).send({Message:"Comment added successfully"})     
    } catch (error){
-       res.sendStatus(400);
-<span class="cstat-no" title="statement not covered" >     console.</span>log(error)
-<span class="cstat-no" title="statement not covered" >     console.</span>log(req.user)
+<span class="cstat-no" title="statement not covered" >       res.</span>status(500).send({Message:"problem adding comment"});
+    //  console.log(error)
     //  console.log(req.user["user"]["_id"])
    }
 })
@@ -467,10 +459,9 @@ router.post("/",verifyToken,validateMiddleWare(validateComment) , <span class="b
 router.delete("/:id", verifyToken,validateMiddleWare(validateComment), <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >async (r</span></span>eq, res) =&gt; {
 	try {
 		await Comment.deleteOne({ articleId: req.params.id , userId:req.user["user"]["_id"]})
-<span class="cstat-no" title="statement not covered" >		res.</span>sendStatus(204);
+<span class="cstat-no" title="statement not covered" >		res.</span>sendStatus(204).send({Message: "Comment Deleted successfully"});
 	} catch {
-<span class="cstat-no" title="statement not covered" >		res.</span>status(404);
-<span class="cstat-no" title="statement not covered" >		res.</span>send({ error: "Problem disliking" })
+<span class="cstat-no" title="statement not covered" >		res.</span>status(500).send({ error: "Problem deleting a comment" })
 	}
 })
 &nbsp;
@@ -481,7 +472,7 @@ module.exports = router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu Feb 10 2022 10:27:30 GMT+0200 (South Africa Standard Time)
+                at Mon Feb 14 2022 17:47:47 GMT+0200 (South Africa Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
