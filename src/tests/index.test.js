@@ -46,12 +46,12 @@ describe('API', () => {
                 .post('/signup')
                 // send user registration details
                 .send({
-                        'username': 'Ronaldo Chris',
+                        'email': 'Ronaldomessi@gmail.com',
                         'password': 'Testertester',
                     }
                 ) 
-                .end((err, res) => { // when we get a resonse from the endpoint
-
+                .end((err, res) => { // when we get a response from the endpoint
+                     console.log(res.body)
                     // the res object should have a status of 201
                     res.should.have.status(201);
 
@@ -60,7 +60,7 @@ describe('API', () => {
                         .post('/login')
                         // send user login details
                         .send({
-                            'username': 'Ronaldo Chris',
+                            'email': 'Ronaldomessi@gmail.com',
                             'password': 'Testertester'
                         })
                         .end((err, res) => {
@@ -78,8 +78,8 @@ describe('API', () => {
                 .post('/signup')
                 // send user registration details
                 .send({
-                        'username': 'Ronaldo Chris',
-                        'password': 'tet',
+                    'email': 'Ronaldomessi@gmail.com',
+                    'password': 'tet',
                     }
                 ) 
                 .end((err, res) => { // when we get a resonse from the endpoint
@@ -199,19 +199,6 @@ describe('API', () => {
 
    describe("Likes",()=>{
        let likeId;
-        describe('/GET Like', () => {
-            it(' should GET all the likes', (done) => {
-            chai.request(server)
-                .get('/like')
-                .end((err, res) => {
-                        res.should.have.status(200);
-                        res.body.should.be.a('array');
-                        res.body.length.should.not.be.eql(0);
-                        likeId = res.body[0]["_id"];
-                    done();
-                });
-            });
-        });
   
         describe("/POST like",() =>{
             it(' should POST a like ', (done) => {
@@ -224,18 +211,30 @@ describe('API', () => {
                   .send(like)
                   .set('Authorization', 'JWT ' + token) //token is actual token data
                   .end((err, res) => {
-                        res.should.have.status(201);
+                    res.body.should.have.property('Message');
                     done();
                   });
             });
          })
-
+         
+         describe('/GET Like', () => {
+            it(' should GET all the likes', (done) => {
+            chai.request(server)
+                .get('/like')
+                .end((err, res) => {
+                        res.should.have.status(200);
+                        res.body.should.be.a('array');
+                        res.body.length.should.not.be.eql(0);
+                        likeId = res.body[0]["_id"];
+                    done();
+                });
+            });
+        });
          describe('/GET like/:id', () => {
 
             it(' should GET a particular like', (done) => {
               chai.request(server)
                   .get('/like/' + likeId)
-                  .set('Authorization', 'JWT ' + token) //token is actual token data
                   .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
