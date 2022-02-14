@@ -14,9 +14,7 @@ router.get("/",  async(req,res)=>{
         res.status(200).send("<h1> Welcome to my blog api </h1>");
     } catch (error){
         res.sendStatus(500).send({error:"Problem with request"})
-
     }
-
 })
 
 

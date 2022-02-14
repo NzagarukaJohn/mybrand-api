@@ -8,9 +8,12 @@ const config = require("config");
 
 
 router.get("/",async (req,res)=>{
-    const users = await User.find()
-
-    res.send(users)
+   // const users = await User.find()
+   try {
+    res.status.send({Message: "This should be the login page rendered"})       
+   } catch (error) {
+       res.status(404).send("Login resource not found")
+   }
 })
 
 /**
@@ -64,7 +67,7 @@ router.post("/",async(req,res)=>{
          res.status(400).send("Password Incorrect");
       }
    } catch (err) {
-       res.sendStatus(405);
+       res.status(405).send({Message: "Problem with the server"});
    }
 
 })

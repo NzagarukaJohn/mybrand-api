@@ -1,10 +1,12 @@
 const express = require("express");
 const {validateLike,Like } = require("../models/Like");
+const {validateDislike,Dislike } = require("../models/Dislike");
 const {Article } = require("../models/Like");
 
 const router = express.Router();
 const validateMiddleWare = require('../middlewares/validateMiddleware')
 
+import e from "express";
 import { verifyToken } from "../controllers/verifyToken";
 
 /**
@@ -43,23 +45,41 @@ router.get("/",  async(req,res)=>{
         const likes = await Like.find({});
         res.status(200).send(likes);
     } catch (error){
-        res.sendStatus(500).send({error:"Problem with request"})
-        console.log(error)
-
+        res.status(500).send({error:"Problem fetching likes"})
+      //  console.log(error)
     }
 
 })
 
+/**
+ * @swagger
+ * "like/article/{articleId}":
+ *   get:
+ *     summary: Find likes for one article
+ *     tags: 
+ *       - Like
+ *     parameters:
+ *       - name: articleId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The Id of the article
+ *     responses:
+ *       '200':
+ *         description: OK
+ *       '404':
+ *         description:  Not found
+  */
 
-
-router.get("/:id", async (req,res) =>{
+router.get("article/:id", async (req,res) =>{
     try {
         const likes = await Like.find({articleId:req.params.id})
     
-        res.send({likes: likes.length})   
+        res.status(200).send({likes: likes.length})   
     } catch(error)  {
-        console.error(error);
-        res.sendStatus(404);
+        // console.error(error);
+        res.status(404).send({Message:"No like for this particular article"});
     }
 
 })
@@ -98,28 +118,85 @@ router.get("/:id", async (req,res) =>{
 
 router.post("/",verifyToken,validateMiddleWare(validateLike) , async (req,res) =>{
    try {
+   let likeExists = Like.findOne({articleId:req.body.articleId, userId: req.user["id"]});
+   let dislikeExists = Dislike.findOne({articleId:req.body.articleId, userId: req.user["id"]});
 
-    const newLike = new Like({
-        articleId : req.body.articleId,
-        userId : req.user["id"]
-        })
-
-        await newLike.save();
-    res.sendStatus(201).send("")     
+   //check if user has disliked article and remove dislike
+   if (dislikeExists) {
+    await Dislike.deleteOne({ articleId: req.params.id , userId:req.user["id"]})
+    }
+   //Add New like if a user have previously liked the article
+    if (!likeExists) {
+        const newLike = new Like({
+            articleId : req.body.articleId,
+            userId : req.user["id"]
+            })
+    
+            await newLike.save();
+        res.status(201).send({Message:"Like added successfully"})    
+    } else {
+        res.status(400).send({Message: "User already liked the article"})
+    }
+     
    } catch (error){
-       res.sendStatus(400).send({error:"There was a problem adding a like"})
+       res.sendStatus(500).send({error:"There was a problem adding a like"})
     // console.log(error)
    }
 })
 
 
+/**
+ * @swagger
+ * "/like/{articleId}":
+ *   delete:
+ *     summary: Dislike an article
+ *     tags: 
+ *       - Like
+ *     parameters:
+ *       - name: articleId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The Id of the article
+*     responses:
+*       '400':
+*         description: Bad Request 
+*       '201':
+*         description: Article disliked successfully.
+*         content:
+*           application/json:
+*             schema:
+*               type: object
+*               properties:
+*                 Message:
+*                   type: string
+ */
+
 router.delete("/:id", verifyToken,validateMiddleWare(validateLike), async (req, res) => {
 	try {
-		await Like.deleteOne({ articleId: req.params.id , userId:req.user["user"]["_id"]})
-		res.sendStatus(204);
+        //ch if a user has previously liked the article
+        let likeExists = Like.findOne({articleId:req.body.articleId, userId: req.user["id"]});
+         if (likeExists) {
+            await Like.deleteOne({ articleId: req.params.id , userId:req.user["id"]})
+         }
+         let dislikeExists = Dislike.findOne({articleId:req.body.articleId, userId: req.user["id"]});
+
+         //check if user has disliked article and remove dislike
+         if (dislikeExists) {
+          await Dislike.deleteOne({ articleId: req.params.id , userId:req.user["id"]})
+          }else{
+            const newDislike = new Dislike({
+                articleId : req.body.articleId,
+                userId : req.user["id"]
+                })
+        
+                await newDislike.save();
+
+            res.status(201).send({Message:"you have dislike this article"}) 
+            }
 	} catch {
-		res.status(404)
-		res.send({ error: "Problem disliking" })
+		res.status(500).send({ error: "Problem disliking" })
 	}
 })
 

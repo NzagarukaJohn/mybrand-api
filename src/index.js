@@ -3,7 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-
+const cors = require("cors")
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express")
 
@@ -18,7 +18,8 @@ const signupRouter = require("./routes/sign-up")
 
 
 const PORT = process.env.PORT || 5000;
-const config = require("config")
+const config = require("config");
+const req = require("express/lib/request");
 
 const swaggerDefinition = {
         openapi: '3.0.0',
@@ -73,6 +74,10 @@ const connectDB = async () => {
         await mongoose.connect(config.DBHost, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(()=>{
                 //middlewares
+                app.use(cors({
+                  origin: '*'
+                }))
+                
                 app.use(express.json())
                  
                 //middlewares for routes

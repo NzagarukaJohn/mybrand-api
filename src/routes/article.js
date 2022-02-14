@@ -51,20 +51,42 @@ router.get("/",  async(req,res)=>{
         const articles = await Article.find({});
         res.status(200).send(articles);
     } catch (error){
-        res.status(500).send({error:"Problem with request"})
+        res.status(404).send({error:"Problem getting articles"})
     }
-
 })
 
+/**
+ * @swagger
+ * "/article/{articleId}":
+ *   get:
+ *     summary: Find article by ID
+ *     tags: 
+ *       - Article
+ *     parameters:
+ *       - name: articleId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The Id of the article
+ *     responses:
+ *       "200":
+ *         description: successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Article"
+ *       "404":
+ *         description: Article not found
+ */
 
 router.get("/:id", async (req,res) =>{
     try {
         const article = await Article.findOne({ _id: req.params.id})
-        res.send(article)   
+        res.status(200).send(article)   
     } catch (err) {
-        res.status(404)
-        res.send({error: "Article doesn't exist !"})
-        console.log(err)
+        res.status(404).send({error: "Article doesn't exist !"})
+        // console.log(err)
     }
 
 })
@@ -117,6 +139,7 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
    }
 })
 
+
 /**
  * @swagger
  * "/article/{articleId}":
@@ -144,57 +167,41 @@ router.post("/",verifyToken, validateMiddleware(validateArticle), async (req,res
 
 router.delete("/:id", verifyToken, async (req, res) => {
 	try {
-		await Article.deleteOne({ _id: req.params.id })
-		res.status(204).send();
+    let articleUser = await Article.findOne({_id: req.params.id})
+        if (req.user["id"] == articleUser["userId"]) {
+            await Article.deleteOne({ _id: req.params.id })
+            res.status(202).send({Message:"Article deleted successfully"});      
+        } else {
+            res.status(401).send({Message:"Not Authorized to perform this operation"})
+        }
 	} catch {
 		res.status(404).send({ error: "This article doesn't exist!" })
 	}
 })
 
-/**
- * @swagger
- * "/article/{articleId}":
- *   get:
- *     summary: Find article by ID
- *     tags: 
- *       - Article
- *     parameters:
- *       - name: articleId
- *         in: path
- *         required: true
- *         schema:
- *           type: string
- *         description: The Id of the article
- *     responses:
- *       "200":
- *         description: successful operation
- *         content:
- *           application/json:
- *             schema:
- *               $ref: "#/components/schemas/Article"
- *       "404":
- *         description: Article not found
- */
-
 router.put("/:id", validateMiddleWare(validateArticle) ,async (req, res) => {
 	try {
-		const article = await Article.findOne({ _id: req.params.id })
+        let articleUser = await Article.findOne({_id: req.params.id})
+        if (req.user["id"] == articleUser["userId"]) {
+		    const article = await Article.findOne({ _id: req.params.id })
 
-		if (req.body.heading) {
-			article.heading = req.body.heading
-		}
+            if (req.body.heading) {
+                article.heading = req.body.heading
+            }
 
-		if (req.body.content) {
-			article.content = req.body.content
-		}
-		if (req.body.image) {
-			article.content = req.body.content
-		}
-		await article.save()
-		res.send(article)
+            if (req.body.content) {
+                article.content = req.body.content
+            }
+            if (req.body.image) {
+                article.content = req.body.content
+            }
+            await article.save()
+            res.status(200).send(article)
+        }else{
+            res.status(401).send({Message:"Not Authorized to perform this operation"})  
+        }
 	} catch(err) {
-		res.status(404);
-		res.send({ error: "We couldn't find that article " })
+		res.status(404).send({ error: "We couldn't find that article " })
         //console.log(err);
 	}
 })

@@ -59,14 +59,13 @@ import { verifyToken } from "../controllers/verifyToken";
  */
 
 router.get("/", verifyToken ,async (req,res)=>{
+    try {
     const queries = await  Query.find();
     const user = req.user;
-    //  if(user["user"].type == "user"){
-          res.status(200).send(queries);
-    //  }
-    // else{
-    //     res.sendStatus(401);
-    // }
+         res.status(200).send(queries);
+    } catch (error) {
+        res.status(404).send({Message: "Problem getting articles"})
+    }
 })
 
 /** 

@@ -44,10 +44,10 @@ import { verifyToken } from "../controllers/verifyToken";
 router.get("/",  async(req,res)=>{
     try {
         const comments = await Comment.find({});
-        res.send(comments);
+        res.status(200).send(comments);
     } catch (error){
         // console.log(error)
-        res.sendStatus(500);
+        res.status(500).send({Message: "Problem getting comments"});
     }
 
 })
@@ -60,9 +60,8 @@ router.get("/:id", async (req,res) =>{
         res.send({comments: comments.length})   
     } catch(error)  {
         console.error(error);
-        res.sendStatus(404);
+        res.sendStatus(404).send("Comment not found");
     }
-
 })
 
 /** 
@@ -115,11 +114,10 @@ router.post("/",verifyToken,validateMiddleWare(validateComment) , async (req,res
         })
 
         await newComment.save();
-    res.sendStatus(201).send("")     
+    res.status(201).send({Message:"Comment added successfully"})     
    } catch (error){
-       res.sendStatus(400);
-     console.log(error)
-     console.log(req.user)
+       res.status(500).send({Message:"problem adding comment"});
+    //  console.log(error)
     //  console.log(req.user["user"]["_id"])
    }
 })
@@ -128,10 +126,9 @@ router.post("/",verifyToken,validateMiddleWare(validateComment) , async (req,res
 router.delete("/:id", verifyToken,validateMiddleWare(validateComment), async (req, res) => {
 	try {
 		await Comment.deleteOne({ articleId: req.params.id , userId:req.user["user"]["_id"]})
-		res.sendStatus(204);
+		res.sendStatus(204).send({Message: "Comment Deleted successfully"});
 	} catch {
-		res.status(404);
-		res.send({ error: "Problem disliking" })
+		res.status(500).send({ error: "Problem deleting a comment" })
 	}
 })
 

@@ -45,23 +45,23 @@ router.get("/",(req,res)=>{
 
 router.post("/", validateMiddleWare(validateUser), async(req,res)=>{
 try {    
-    const userExist = await User.findOne({username: req.body.username})
-    if (userExist) return res.status(400).send("Username Already Taken")
+
+    const userExist = await User.findOne({email: req.body.email})
+    if (userExist) return res.status(400).send("email Already Taken")
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
 
     const user= new User({
-        username:req.body.username,
+        email:req.body.email,
         password:hashedPassword,
         type: "user"
     })
 
      await user.save();
-  const users = await User.find();
     res.status(201).send({Message:"User registered Successfully"})
 } catch (error) {
     // console.log(error)
-    res.status(500).send();
+    res.status(500).send("Problem registering new users");
 }
 
 })
