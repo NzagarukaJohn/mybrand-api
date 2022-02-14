@@ -53,7 +53,7 @@ router.get("/",  async(req,res)=>{
 
 /**
  * @swagger
- * "like/article/{articleId}":
+ * "/like/article/{articleId}":
  *   get:
  *     summary: Find likes for one article
  *     tags: 
@@ -72,7 +72,7 @@ router.get("/",  async(req,res)=>{
  *         description:  Not found
   */
 
-router.get("article/:id", async (req,res) =>{
+router.get("/article/:id", async (req,res) =>{
     try {
         const likes = await Like.find({articleId:req.params.id})
     
