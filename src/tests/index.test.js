@@ -27,7 +27,7 @@ describe('API', () => {
 
     beforeEach((done) => { //Before each test we empty the database
         User.deleteMany({},(err)=>{
-            //  console.log(config.get("DBHOST"))
+         //  console.log(config.get("DBHost"))
             done();
         });
     });
@@ -51,7 +51,7 @@ describe('API', () => {
                     }
                 ) 
                 .end((err, res) => { // when we get a response from the endpoint
-                     console.log(res.body)
+                     //console.log(res.body)
                     // the res object should have a status of 201
                     res.should.have.status(201);
 

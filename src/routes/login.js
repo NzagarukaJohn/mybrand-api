@@ -50,7 +50,6 @@ router.get("/",async (req,res)=>{
  */
 
 router.post("/",async(req,res)=>{
-    // await User.deleteMany({})
    const user = await User.findOne({email: req.body.email})
   
    if (user == null) {
@@ -67,6 +66,7 @@ router.post("/",async(req,res)=>{
          res.status(400).send("Password Incorrect");
       }
    } catch (err) {
+       console.log(err)
        res.status(405).send({Message: "Problem with the server"});
    }
 
