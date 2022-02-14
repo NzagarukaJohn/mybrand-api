@@ -51,7 +51,7 @@ router.get("/",async (req,res)=>{
 
 router.post("/",async(req,res)=>{
     // await User.deleteMany({})
-   const user = await User.findOne({username: req.body.username})
+   const user = await User.findOne({email: req.body.email})
   
    if (user == null) {
        return res.status(400).send({"Message":"Cannot Find User"})

@@ -47,6 +47,7 @@ router.post("/", validateMiddleWare(validateUser), async(req,res)=>{
 try {    
 
     const userExist = await User.findOne({email: req.body.email})
+    
     if (userExist) return res.status(400).send("email Already Taken")
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt)
