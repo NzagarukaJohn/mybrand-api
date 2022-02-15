@@ -34,12 +34,10 @@ const swaggerDefinition = {
         url: 'https://spdx.org/licenses/MIT.html',
       },
       contact: {
-        name:"Rukundo Kevin",
-        url: 'https://www.rukundokevin.codes',
-      },
+        name:"Nzagaruka John"      },
       servers: [
         {
-          url: 'https://rukundo-kevin-blog.herokuapp.com/'
+          url: 'https://john-my-brand.herokuapp.com/'
         }]
         ,
         security: [
