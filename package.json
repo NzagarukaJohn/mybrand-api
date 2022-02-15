@@ -1,8 +1,7 @@
 {
   "name": "my-blog",
   "version": "1.0.0",
-  "description": "A personal website with blog developed as part of Andela Technical Leadership Capstone project challenge",
-  "main": "index.js",
+  "description": "a blog in andela atlp",
   "scripts": {
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
@@ -13,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rukundo-kevin/My-Blog.git"
+    "url": "git+ https://github.com/johnNzagaruka/mybrand-api.git"
   },
-  "author": "Rukundo Kevin",
+  "author": "Nzagaruka John",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rukundo-kevin/My-Blog/issues"
+    "url": " https://github.com/johnNzagaruka/mybrand-api/issues"
   },
   "engines": {
     "node": "^12.14.1"
   },
-  "homepage": "https://github.com/rukundo-kevin/My-Blog#readme",
+  "homepage": " https://github.com/johnNzagaruka/mybrand-api#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "bcrypt": "^5.0.1",
